@@ -12,7 +12,7 @@ public class Controller {
 		System.out.println("Loading sound bank...");
 		//!!!!!!!!!!!!!! CHANGE THIS PATH !!!!!!!!!!!!!!!//
 		//LoadSoundBank.load("C:\\Documents and Settings\\Jeff\\workspace\\musicAI\\MusicAI\\soundbank-deluxe.gm");  //THIS NEEDS TO BE THE PATH WHERE THE MUSIC AI FILES ARE LOCATED
-		LoadSoundBank.load("/Users/jeff/Desktop/Stuff/Programming Projects/musicAI/MusicAI/soundbank-deluxe.gm");  //THIS NEEDS TO BE THE PATH WHERE THE MUSIC AI FILES ARE LOCATED
+		LoadSoundBank.load("/Users/jeff/AIMusic/soundbank-deluxe.gm");  //THIS NEEDS TO BE THE PATH WHERE THE MUSIC AI FILES ARE LOCATED
 		//!!!!!!!!!!!!!! CHANGE THIS PATH !!!!!!!!!!!!!!!//
 		
 	    // 1. Create an InputStreamReader using the standard input stream.
