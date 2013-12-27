@@ -198,11 +198,14 @@ public class Player extends Thread
 			try
 			{
 				//Testing to see what midi devices are available
-				/*for(MidiDevice.Info x : MidiSystem.getMidiDeviceInfo()) {
+				for(MidiDevice.Info x : MidiSystem.getMidiDeviceInfo()) {
+          System.out.println(x);
 					MidiDevice device = MidiSystem.getMidiDevice(x);
-					if(device.getDeviceInfo().getName().contains("USB")){
-						System.out.println(device.getDeviceInfo().getName());
-						MidiDevice usbDevice = device;
+          System.out.println(device.getDeviceInfo().getName());
+          System.out.println("Max Transmitters: " + device.getMaxTransmitters());
+            
+						System.out.println("Max Reciever " + device.getMaxReceivers());
+					if(device.getMaxReceivers() != 0 && device.getDeviceInfo().getName().contains("USB")){
 						
 						//sm_synthesizer = MidiSystem.getSynthesizer();
 						//	Instrument[] availInstruments = sm_synthesizer.getAvailableInstruments();
@@ -210,26 +213,26 @@ public class Player extends Thread
 						//	for(int i=0; i<availInstruments.length; i++)
 						//		System.out.println("instruments" + availInstruments[i].toString());
 							//sm_synthesizer.open();
-							Receiver	usbReceiver = usbDevice.getReceiver();
+              device.open();
+							Receiver	usbReceiver = device.getReceiver();
 							Transmitter	seqTransmitter = sm_sequencer.getTransmitter();
 							seqTransmitter.setReceiver(usbReceiver);
 							
 							break;
 					}
-				}*/
+				}
 				
 				
-				sm_synthesizer = MidiSystem.getSynthesizer();
-				//	Instrument[] availInstruments = sm_synthesizer.getAvailableInstruments();
-				//	System.out.println(availInstruments.length);
-				//	for(int i=0; i<availInstruments.length; i++)
-				//		System.out.println("instruments" + availInstruments[i].toString());
-					sm_synthesizer.open();
-					Receiver	synthReceiver = sm_synthesizer.getReceiver();
-					Transmitter	seqTransmitter = sm_sequencer.getTransmitter();
-					seqTransmitter.setReceiver(synthReceiver);
+				// sm_synthesizer = MidiSystem.getSynthesizer();
+				// //	Instrument[] availInstruments = sm_synthesizer.getAvailableInstruments();
+				// //	System.out.println(availInstruments.length);
+				// //	for(int i=0; i<availInstruments.length; i++)
+				// //		System.out.println("instruments" + availInstruments[i].toString());
+				// 	sm_synthesizer.open();
+				// 	Receiver	synthReceiver = sm_synthesizer.getReceiver();
+				// 	Transmitter	seqTransmitter = sm_sequencer.getTransmitter();
+				// 	seqTransmitter.setReceiver(synthReceiver);
 					
-				//end testing
 				
 
 			}
@@ -239,6 +242,10 @@ public class Player extends Thread
 				e.printStackTrace();
 			}
 		}
+    
+
+    //try opening the reciever
+    //
 
 		/*
 		 *	Now, we can start over.
@@ -246,18 +253,15 @@ public class Player extends Thread
 		sm_sequencer.start();
 
 		try{
-			
 			while(sm_sequencer.isRunning())
 				; //wait?
-			
-			
-
 		}
 		catch(Exception e){
 			System.out.println("Thread excption in Player.java:\n" + e.toString());
 		}
-		
-		//sm_sequencer.close();
+    finally {
+  		sm_sequencer.close();
+    }
 	}
 
 

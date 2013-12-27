@@ -521,7 +521,8 @@ public class CreateSequence extends Thread
 			
 			ArrayList<Integer> values = new ArrayList<Integer>();
 			
-			track.add(setSound(118,0)); // maybe do this earlier, the second j is the channel, maybe ont change the channel?
+			// track.add(setSound(118,0)); // maybe do this earlier, the second j is the channel, maybe ont change the channel?
+			track.add(setSound(118,1));
 
 			//number of ticks each note is held for
 			//this is stored for when the note is actually played and
@@ -806,12 +807,12 @@ public class CreateSequence extends Thread
 				offEvents[h] = new ArrayList<Integer>();
 				
 			}
-			tracks[0].add(setSound(33,0)); //bass				
-			tracks[1].add(setSound(73,1)); //lead (flute)
-			tracks[2].add(setSound(118,2)); //drum
-			tracks[3].add(setSound(1,3)); //piano
-			tracks[4].add(setSound(1,4)); //piano
-			tracks[5].add(setSound(1,5)); //piano
+			tracks[0].add(setSound(33,1)); //bass				
+			tracks[1].add(setSound(73,2)); //lead (flute)
+			tracks[2].add(setSound(118,3)); //drum
+			tracks[3].add(setSound(1,4)); //piano
+			tracks[4].add(setSound(1,5)); //piano
+			tracks[5].add(setSound(1,6)); //piano
 			
 		/*	for(int q = size-3; q<size; q++){ //change the last 3 scales to be chords instead
 				myScalesArr[q] = new Chords();
@@ -1010,6 +1011,7 @@ public class CreateSequence extends Thread
 	
 	
 	private static MidiEvent setSound(int instrument,int channel){
+    
 		
 		/*
 		 *  foo: 0 Instrument Grand Piano (bank 0 program 0)
@@ -1207,7 +1209,7 @@ public class CreateSequence extends Thread
 		ShortMessage sm = new ShortMessage( );
 		
 		try{
-			// set the instrument on channel 0
+			// set the instrument on channel 1
 			sm.setMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument, 0);
 		}
 		catch(Exception e){
