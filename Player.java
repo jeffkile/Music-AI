@@ -173,6 +173,7 @@ public class Player extends Thread
 		}
 		catch (InvalidMidiDataException e)
 		{
+      System.out.println("Error in player.java");
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -261,17 +262,31 @@ public class Player extends Thread
 		/*
 		 *	Now, we can start over.
 		 */
+    if (DEBUG) {
+      System.out.println("Starting Sequencer");
+    }
 		sm_sequencer.start();
 
 		try{
-			while(sm_sequencer.isRunning())
-				; //wait?
+      long lastTick = 0;
+			while(sm_sequencer.isRunning()) {
+        if (DEBUG) {
+          if (lastTick != sm_sequencer.getTickPosition()) {
+            lastTick = sm_sequencer.getTickPosition();
+            System.out.print(lastTick + " ");
+          }
+        }
+      }
 		}
 		catch(Exception e){
 			System.out.println("Thread excption in Player.java:\n" + e.toString());
 		}
     finally {
-  		sm_sequencer.close();
+      if (DEBUG) {
+        System.out.println("Closing Sequencer");
+      }
+      // If we don't close the sequence we can keep looping
+  		// sm_sequencer.close();
     }
 	}
 

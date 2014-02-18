@@ -89,9 +89,10 @@ public class CreateSequence extends Thread
 	}
 	
 	//public static void main(String[] args)
-	public void run(String sequenceType)
+	public void run(String sequenceType) // Implements runnable
 	//public void start(String sequenceType)
 	{
+
 	
 		Sequence	sequence = null;
 		try
@@ -823,7 +824,7 @@ public class CreateSequence extends Thread
 			int[] feelChoice = new int[size];
 			feelChoice[0] = 0; //bass very slow
 			feelChoice[1] = 4; //melody fast
-			feelChoice[2] = 1; //drums slow
+			feelChoice[2] = 2; //drums moderate 
 			feelChoice[3] = 1; //chords slow 
 			feelChoice[4] = 1; //chords slow
 			feelChoice[5] = 1; //chords slow
