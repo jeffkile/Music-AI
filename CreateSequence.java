@@ -21,6 +21,7 @@ import javax.sound.midi.InvalidMidiDataException;
 
 public class CreateSequence extends Thread
 {
+  private boolean DEBUG;
 	/*	This velocity is used for all notes.
 	 */
 	private static final int	VELOCITY = 64;
@@ -44,10 +45,16 @@ public class CreateSequence extends Thread
 	int[] oldNotes; 
 	Scales[] myScalesArr;
 	int[] tempIndexs;
+
+  CreateSequence(int size, int numTicks, boolean debug) {
+    this(size, numTicks);
+    this.DEBUG = debug;
+  }
 	
 	CreateSequence(int a, int t){
 		size = a;
 		numTicks = t;
+    this.DEBUG = false;
 		
 		newNotes = new int[size];
 		oldNotes = new int[size]; 
@@ -169,7 +176,9 @@ public class CreateSequence extends Thread
 				
 				r = Math.random();
 				  			
-				System.out.println("note:" + (int)(58+(24*r)) + " time on:" + (i) ); //debugging
+        if (DEBUG) {
+				  System.out.println("note:" + (int)(58+(24*r)) + " time on:" + (i) ); //debugging
+        }
 							
 				track.add( createNoteOffEvent((int)(58+(24*r)), i) ); //turn off the last note thats playing, otherwise it will keep playing
 				track.add( createNoteOnEvent((int)(58+(24*r)), i) ); //turn on the next note, choose between 58 and 82 at time 8+i 
@@ -202,8 +211,10 @@ public class CreateSequence extends Thread
 				tempScale = myScales.getHighestCount();
 				tempScale2 = myScales.getHighestCount();
 				
-				System.out.println("Scale 1:" + tempScale.getScaleKey() + " " + tempScale.getScaleType()); //debugging
-				System.out.println("Scale 2:" + tempScale2.getScaleKey() + " " + tempScale2.getScaleType()); //debugging
+        if (DEBUG) {
+          System.out.println("Scale 1:" + tempScale.getScaleKey() + " " + tempScale.getScaleType()); //debugging
+          System.out.println("Scale 2:" + tempScale2.getScaleKey() + " " + tempScale2.getScaleType()); //debugging
+        }
 				
 				notes = tempScale.getNotes();
 
@@ -226,9 +237,10 @@ public class CreateSequence extends Thread
 				
 				oldNote2 = newNote2;
 				newNote2 = ((Integer)(tempScale2.getNotes().get(tempIndex))).intValue();
-				
-				System.out.println("note:" + newNote +"index:" + tempIndex+ " time on:" + (i) ); //debugging
-				System.out.println("note2:" + newNote +"index:" + tempIndex+ " time on:" + (i) ); //debugging						
+			  if (DEBUG) {	
+          System.out.println("note:" + newNote +"index:" + tempIndex+ " time on:" + (i) ); //debugging
+          System.out.println("note2:" + newNote +"index:" + tempIndex+ " time on:" + (i) ); //debugging						
+        }
 				
 				track.add( createNoteOffEvent(oldNote, i) ); //turn off the last note thats playing, otherwise it will keep playing
 				track.add( createNoteOnEvent(newNote, i) ); //turn on the next note, choose between 58 and 82 at time 8+i
@@ -275,7 +287,9 @@ public class CreateSequence extends Thread
 						if(i[j]!=0)
 							tracks[j].add(createNoteOffEvent(oldNotes[j], i[j])); //turn off the last note thats playing, otherwise it will keep playing
 
-						System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+            if (DEBUG) {
+  						System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+            }
 		
 						r = Math.random();
 						//choose a note close to the last notes
@@ -287,7 +301,9 @@ public class CreateSequence extends Thread
 						oldNotes[j] = newNotes[j];
 						newNotes[j] = ((Integer)(tempScales[j].getNotes().get(tempIndexs[j]))).intValue();
 						
-						System.out.println("Note: " + newNotes[j] + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+            if (DEBUG) {
+						  System.out.println("Note: " + newNotes[j] + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+            }
 						
 						//maybe dont do noteOff first?
 
@@ -331,13 +347,18 @@ public class CreateSequence extends Thread
 					i[j] = i[j] + ((int)(Math.random()*3) ); //increment i a random amount between 1 and 4, this means each note will not have the same length
 					while(i[j]<(4*measures)){  //4 quarter notes in one in "Measures"
 					
-						System.out.println("get second highest count");
+						if (DEBUG) {
+              System.out.println("get second highest count");
+            }
+
 						tempScales[j] = myScalesArr[j].getSecondHighestCount();  //only real change between this and highest score
 						
 						if(i[j]!=0)
 							tracks[j].add(createNoteOffEvent(oldNotes[j], i[j])); //turn off the last note thats playing, otherwise it will keep playing
-
-						System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+  
+						if (DEBUG) {
+              System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+            }
 		
 						r = Math.random();
 						//choose a note close to the last notes
@@ -349,7 +370,9 @@ public class CreateSequence extends Thread
 						oldNotes[j] = newNotes[j];
 						newNotes[j] = ((Integer)(tempScales[j].getNotes().get(tempIndexs[j]))).intValue();
 						
-						System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+						if (DEBUG) {
+              System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+            }
 						
 						//maybe dont do noteOff first?
 
@@ -404,25 +427,31 @@ public class CreateSequence extends Thread
 						while(i[j]<(8*measures)){  //4 quarter notes in one in "Measures"
 						
 							if(j<size-3){ //not the chord agents
-								System.out.println("get second highest count");
+                if (DEBUG) {
+								  System.out.println("get second highest count");
+                }
 								tempScales[j] = myScalesArr[j].getSecondHighestCount();  //only real change between this and highest score
 								
 								if(i[j]!=0)
 									tracks[j].add(createNoteOffEvent(oldNotes[j], i[j])); //turn off the last note thats playing, otherwise it will keep playing
 		
-								System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
-				
-								r = Math.random();
-								//choose a note close to the last notes
-								tempIndexs[j] = (int)((tempIndexs[j]-2)+(5*r));  //choose a index within 4 indexes of the last index, note the last index could be from a diffrent scale then the new scale
-								
-								while(tempIndexs[j]<12 || tempIndexs[j]>tempScales[j].getNotes().size())
-									tempIndexs[j] = (int)((tempIndexs[j]-4)+(11*r));
-								
-								oldNotes[j] = newNotes[j];
-								newNotes[j] = ((Integer)(tempScales[j].getNotes().get(tempIndexs[j]))).intValue();
-								
-								System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+								if (DEBUG) {
+                  System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+                }
+
+                r = Math.random();
+                //choose a note close to the last notes
+                tempIndexs[j] = (int)((tempIndexs[j]-2)+(5*r));  //choose a index within 4 indexes of the last index, note the last index could be from a diffrent scale then the new scale
+
+                while(tempIndexs[j]<12 || tempIndexs[j]>tempScales[j].getNotes().size())
+                  tempIndexs[j] = (int)((tempIndexs[j]-4)+(11*r));
+
+                oldNotes[j] = newNotes[j];
+                newNotes[j] = ((Integer)(tempScales[j].getNotes().get(tempIndexs[j]))).intValue();
+
+                if (DEBUG) {
+                  System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+                }
 								
 								//maybe dont do noteOff first?
 								tracks[j].add(createNoteOnEvent(newNotes[j], i[j])); //turn on the next note, choose between 58 and 82 at time 8+i
@@ -438,7 +467,9 @@ public class CreateSequence extends Thread
 							else{ // j>size-3 so it is the chord agents
 								
 								if(j==size-3){ //set all chord agents to the same chord
-									System.out.println("get highest chord count");
+									if (DEBUG) {
+                    System.out.println("get highest chord count");
+                  }
 									tempScales[j] = myScalesArr[j].getHighestCount();  //these "scales" are actually chords
 									tempScales[j+1] = myScalesArr[j].getHighestCount();  //these "scales" are actually chords
 									tempScales[j+2] = myScalesArr[j].getHighestCount();  //these "scales" are actually chords
@@ -446,7 +477,9 @@ public class CreateSequence extends Thread
 								if(i[j]!=0)
 									tracks[j].add(createNoteOffEvent(oldNotes[j], i[j])); //turn off the last note thats playing, otherwise it will keep playing
 								
-								System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+								if (DEBUG) {
+                  System.out.println("Measure: " + measures + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+                }
 								
 								r = Math.random();
 								//choose a note close to the last notes
@@ -455,17 +488,23 @@ public class CreateSequence extends Thread
 								
 								while(tempIndexs[j]<12){
 									tempIndexs[j] += 1+(3*r);
-									System.out.println("loop 1");
+									if (DEBUG) {
+                    System.out.println("loop 1");
+                  }
 								}
 								while( tempIndexs[j]>=tempScales[j].getNotes().size()){
 									tempIndexs[j] -= 1-(3*r);
-									System.out.println("loop 2");
+									if (DEBUG) {
+                    System.out.println("loop 2");
+                  }
 								}
 								 
 								oldNotes[j] = newNotes[j];
 								newNotes[j] = ((Integer)(tempScales[j].getNotes().get(tempIndexs[j]))).intValue();
 								
-								System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+								if (DEBUG) {
+                  System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+                }
 								
 								tracks[j].add(createNoteOnEvent(newNotes[j], i[j])); //turn on the next note, choose between 58 and 82 at time 8+i
 								
@@ -474,7 +513,9 @@ public class CreateSequence extends Thread
 //								change this to a rythm heuristic
 								i[j] = i[j] + 4; // were playing a chord every 4 ticks
 								
-								System.out.println("i[j] = " + i[j]);
+								if (DEBUG) {
+                  System.out.println("i[j] = " + i[j]);
+                }
 							}
 						}
 						tracks[j].add(createNoteOffEvent(oldNotes[j], 4*measures)); //turn off the last note thats playing, otherwise it will keep playing
@@ -556,7 +597,9 @@ public class CreateSequence extends Thread
 			 *	case 4: QUICK;
 			 *	case 5: MIX;
 			 */
-			System.out.println("feel choice: " + feelChoice);
+      if (DEBUG) {
+			  System.out.println("feel choice: " + feelChoice);
+      }
 			BeatGenerator generator = new BeatGenerator(feelChoice);
 			
 			ArrayList<Integer> onEvents;
@@ -642,7 +685,9 @@ public class CreateSequence extends Thread
 			 *	case 4: QUICK;
 			 *	case 5: MIX;
 			 */
-			System.out.println("feel choice: " + feelChoice);
+      if (DEBUG) {
+			  System.out.println("feel choice: " + feelChoice);
+      }
 			BeatGenerator[] generators = new BeatGenerator[size];
 			//= new BeatGenerator(feelChoice);
 			
@@ -684,10 +729,14 @@ public class CreateSequence extends Thread
 						//track.add(createNoteOnEvent(67, onEvents[k].get(k) + c*16)); //c*16 = measure * cljcks per measure
 						//track.add(createNoteOffEvent(67, offEvents[k].get(k) + c*16));
 
-						System.out.println("get second highest count");
+						if (DEBUG) {
+              System.out.println("get second highest count");
+            }
 						tempScales[j] = myScalesArr[j].getSecondHighestCount();  //only real change between this and highest score
 						
-						System.out.println("Measure: " + c + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+						if (DEBUG) {
+              System.out.println("Measure: " + c + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+            }
 		
 						r = Math.random();
 						//choose a note close to the last notes
@@ -700,7 +749,9 @@ public class CreateSequence extends Thread
 						oldNotes[j] = newNotes[j];
 						newNotes[j] = ((Integer)(tempScales[j].getNotes().get(tempIndexs[j]))).intValue();
 						
-						System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+						if (DEBUG) {
+              System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+            }
 						
 						//maybe dont do noteOff first?
 
@@ -732,7 +783,9 @@ public class CreateSequence extends Thread
 			
 			//Added by Jeff - each scale has a score, chooses the next note from the scale with the highest score		
 
-			System.out.println("SIZE: " + size);
+      if (DEBUG) {
+			  System.out.println("SIZE: " + size);
+      }
 			
 			AScale[] tempScales = new AScale[size];
 			
@@ -784,7 +837,9 @@ public class CreateSequence extends Thread
 			 *	case 4: QUICK;
 			 *	case 5: MIX;
 			 */
-			System.out.println("feel choice: " + feelChoice);
+			if (DEBUG) {
+        System.out.println("feel choice: " + feelChoice);
+      }
 			BeatGenerator[] generators = new BeatGenerator[size];
 			//= new BeatGenerator(feelChoice);
 			
@@ -811,8 +866,8 @@ public class CreateSequence extends Thread
 			tracks[1].add(setSound(64,5)); //lead (flute)
 			tracks[2].add(setSound(118,6)); //drum
 			tracks[3].add(setSound(1,1)); //piano
-			tracks[4].add(setSound(1,2)); //piano
-			tracks[5].add(setSound(1,3)); //piano
+			tracks[4].add(setSound(2,2)); //piano
+			tracks[5].add(setSound(3,3)); //piano
 			
 		/*	for(int q = size-3; q<size; q++){ //change the last 3 scales to be chords instead
 				myScalesArr[q] = new Chords();
@@ -843,10 +898,14 @@ public class CreateSequence extends Thread
 						//track.add(createNoteOnEvent(67, onEvents[k].get(k) + c*16)); //c*16 = measure * cljcks per measure
 						//track.add(createNoteOffEvent(67, offEvents[k].get(k) + c*16));
 
-						System.out.println("get second highest count");
+						if (DEBUG) {
+              System.out.println("get second highest count");
+            }
 						tempScales[j] = myScalesArr[j].getSecondHighestCount();  //only real change between this and highest score
 						
-						System.out.println("Measure: " + c + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+						if (DEBUG) {
+              System.out.println("Measure: " + c + " Agent: " + j + " Scale " + j + ":" + tempScales[j].getScaleKey() + " " + tempScales[j].getScaleType()); //debugging
+            }
 		
 						r = Math.random();
 						//choose a note close to the last notes
@@ -867,7 +926,9 @@ public class CreateSequence extends Thread
 						oldNotes[j] = newNotes[j];
 						newNotes[j] = ((Integer)(tempScales[j].getNotes().get(tempIndexs[j]))).intValue();
 						
-						System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+						if (DEBUG) {
+              System.out.println("Note: " + newNotes[j]/12 + " Index:" + tempIndexs[j]+ " Time on:" + i[j]); //debugging
+            }
 						
 						//maybe dont do noteOff first?
 				
@@ -936,7 +997,9 @@ public class CreateSequence extends Thread
 					mm.changeTime();
 				}*/
 			}
-			System.out.println("");
+			if (DEBUG) {
+        System.out.println("");
+      }
 		}
 		else if(sequenceType == "JonMoid")
 		{
@@ -946,7 +1009,9 @@ public class CreateSequence extends Thread
 			track = mm.runLongModal();
 			mm.runAgent(); // doesn't override for whatever reason
 			mm.runAgent();
-			System.out.println("");
+			if (DEBUG) {
+        System.out.println("");
+      }
 		}
 		else if(sequenceType == "JonMoid2")
 		{
@@ -956,7 +1021,9 @@ public class CreateSequence extends Thread
 			track = mm.runLongModal2();
 			mm.runAgent2(); // doesn't override for whatever reason
 			mm.runAgent2();
-			System.out.println("");
+			if (DEBUG) {
+        System.out.println("");
+      }
 		}
 		else if(sequenceType == "Trance")
 		{

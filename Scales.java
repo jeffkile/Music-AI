@@ -3,9 +3,16 @@ import java.util.*;
 
 public class Scales {
 
+  private boolean DEBUG;
 	List myScales = new ArrayList();  //of type aScale
+
+  Scales(boolean debug) {
+    this();
+    this.DEBUG = debug;
+  }
 	
 	Scales(){
+    this.DEBUG = false;
 		try{
 			myScales.add( new AScale("A", "Major") );
 			myScales.add( new AScale("Bb", "Major") );
@@ -41,7 +48,9 @@ public class Scales {
 	
 	public void addNote(int addMe){
 		
-		System.out.println("adding:" + addMe);
+		if (DEBUG) {
+      System.out.println("adding:" + addMe);
+    }
 		
 		for(int i=0; i<myScales.size(); i++){
 			((AScale)myScales.get(i)).updateCount(addMe);
@@ -75,13 +84,16 @@ public class Scales {
 				posList.add(new Integer(i));
 		}
 		
-		System.out.print("Highest scores: " + highest + " - "); //debugging
-		//this whole for loop is debugging
+		if (DEBUG) {
+      System.out.print("Highest scores: " + highest + " - "); //debugging
+
+		  //this whole for loop is debugging
 			for(int i=0; i<myScales.size(); i++){
 				if(((AScale)myScales.get(i)).getScore() == highest){
 					System.out.print(((AScale)myScales.get(i)).getScaleKey() + " " +((AScale)myScales.get(i)).getScaleType() + " ");
 				}
 			}
+    }
 
 		
 		
@@ -112,25 +124,32 @@ public class Scales {
 			}
 		}
 		
-		//	Get all the scales with a tie for highest
-		System.out.print("Highest scores: " + highest + " - "); //debugging
-		//this whole for loop is debugging
-			for(int i=0; i<myScales.size(); i++){
-				if(((AScale)myScales.get(i)).getScore() == highest){
-					System.out.print(((AScale)myScales.get(i)).getScaleKey() + " " +((AScale)myScales.get(i)).getScaleType() + " ");
-				}
-			}
-
-		System.out.println("\n"); //debugging
-		//Get all the scales with a tie for Second highest
-		System.out.print("Second highest scores: " + secondHighest + " - "); //debugging
-		for(int i=0; i<myScales.size(); i++){
-			if(((AScale)myScales.get(i)).getScore() == secondHighest){
-				posList.add(new Integer(i));
-				System.out.print(((AScale)myScales.get(i)).getScaleKey() + " " +((AScale)myScales.get(i)).getScaleType() + " ");
-			}
-		}
-		System.out.println("\n"); //debugging
+    if (DEBUG) {
+      //	Get all the scales with a tie for highest
+        System.out.print("Highest scores: " + highest + " - "); //debugging
+      //this whole for loop is debugging
+        for(int i=0; i<myScales.size(); i++){
+          if(((AScale)myScales.get(i)).getScore() == highest){
+            System.out.print(((AScale)myScales.get(i)).getScaleKey() + " " +((AScale)myScales.get(i)).getScaleType() + " ");
+          }
+        }
+      System.out.println("\n"); //debugging
+    }
+      //Get all the scales with a tie for Second highest
+    if (DEBUG) {
+      System.out.print("Second highest scores: " + secondHighest + " - "); //debugging
+    }
+    for(int i=0; i<myScales.size(); i++){
+      if(((AScale)myScales.get(i)).getScore() == secondHighest){
+        posList.add(new Integer(i));
+        if (DEBUG) {
+          System.out.print(((AScale)myScales.get(i)).getScaleKey() + " " +((AScale)myScales.get(i)).getScaleType() + " ");
+        }
+      }
+    }
+    if (DEBUG) {
+      System.out.println("\n"); //debugging
+    }
 		
 		//select a scale randomly from the highest ties
 		secondPos = ((Integer)posList.get( ((int)(posList.size()*Math.random())) )).intValue();

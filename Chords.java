@@ -4,9 +4,17 @@ import java.util.List;
 
 public class Chords extends Scales{
 	
+  private boolean DEBUG;
 	List myChords = new ArrayList();  //of type aScale
 
+  Chords(boolean debug) {
+    this();
+    this.DEBUG = debug;
+  }
+
 	Chords(){
+    this.DEBUG = false;
+    
 			try{
 			myChords.add( new AScale("A", "MajChord") );
 			myChords.add( new AScale("Bb", "MajChord") );
@@ -218,25 +226,33 @@ public class Chords extends Scales{
 		}
 		
 		//	Get all the scales with a tie for highest
-		System.out.print("Highest scores: " + highest + " - "); //debugging
-		//this whole for loop is debugging
+		if (DEBUG) {
+      System.out.print("Highest scores: " + highest + " - "); //debugging
+		  //this whole for loop is debugging
 			for(int i=0; i<myChords.size(); i++){
 				if(((AScale)myChords.get(i)).getScore() == highest){
 					System.out.print(((AScale)myChords.get(i)).getScaleKey() + " " +((AScale)myChords.get(i)).getScaleType() + " ");
 				}
 			}
+		  System.out.println("\n"); //debugging
+    }
+		  //Get all the scales with a tie for Second highest
+    if (DEBUG) {
+      System.out.print("Second highest scores: " + secondHighest + " - "); //debugging
+    }
 
-		System.out.println("\n"); //debugging
-		//Get all the scales with a tie for Second highest
-		System.out.print("Second highest scores: " + secondHighest + " - "); //debugging
-		for(int i=0; i<myChords.size(); i++){
-			if(((AScale)myChords.get(i)).getScore() == secondHighest){
-				posList.add(new Integer(i));
-				System.out.print(((AScale)myChords.get(i)).getScaleKey() + " " +((AScale)myChords.get(i)).getScaleType() + " ");
-			}
-		}
-		System.out.println("\n"); //debugging
-		
+    for(int i=0; i<myChords.size(); i++){
+      if(((AScale)myChords.get(i)).getScore() == secondHighest){
+        posList.add(new Integer(i));
+        if (DEBUG) {
+          System.out.print(((AScale)myChords.get(i)).getScaleKey() + " " +((AScale)myChords.get(i)).getScaleType() + " ");
+        }
+      }
+    }
+
+    if (DEBUG) {
+      System.out.println("\n"); //debugging
+    }
 		//select a scale randomly from the highest ties
 		secondPos = ((Integer)posList.get( ((int)(posList.size()*Math.random())) )).intValue();
 	

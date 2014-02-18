@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BeatStates {
+  private boolean DEBUG;
+  
 	/*****
 	 * Determines the feel of the player
 	 *****/
@@ -44,8 +46,15 @@ public class BeatStates {
 	private  ArrayList<Beat> memory;
 	
 	private  FeelState feelState;
+
+  public BeatStates(int feelChoice, boolean debug) {
+    this(feelChoice);
+    this.DEBUG = debug;
+  }
 	
 	public BeatStates(int feelChoice) {
+    this.DEBUG = false;
+
 		w = new ArrayList<ArrayList<Beat>>();
 		h = new ArrayList<ArrayList<Beat>>();
 		q = new ArrayList<ArrayList<Beat>>();
@@ -78,7 +87,9 @@ public class BeatStates {
 		}
 		timeState = 0;
 		
-		System.out.println(valueState + timeState + "\n");
+    if (DEBUG) {
+		  System.out.println(valueState + timeState + "\n");
+    }
 
 		//initialize rest of states
 		initialize();
@@ -88,13 +99,29 @@ public class BeatStates {
 		//int feelChoice = random2.nextInt(4);
 		//System.out.println("feel choice: " + feelChoice);
 		switch(feelChoice) {
-			case 0: feelState = FeelState.VERY_SLOW; System.out.println("VERY SLOW"); break;
-			case 1: feelState = FeelState.SLOW; System.out.println("SLOW"); break;
-			case 2: feelState = FeelState.MODERATE; System.out.println("MODERATE"); break;
-			case 3: feelState = FeelState.FAST; System.out.println("FAST"); break;
-			case 4: feelState = FeelState.QUICK; System.out.println("QUICK"); break;
-			case 5: feelState = FeelState.MIX; System.out.println("MIX"); break;
+			case 0: 
+        feelState = FeelState.VERY_SLOW;
+        break;
+			case 1: 
+        feelState = FeelState.SLOW; 
+        break;
+			case 2:
+        feelState = FeelState.MODERATE;
+        break;
+			case 3:
+        feelState = FeelState.FAST;
+        break;
+			case 4:
+        feelState = FeelState.QUICK;
+        break;
+			case 5:
+        feelState = FeelState.MIX;
+        break;
 		}
+
+    if (DEBUG) {
+      System.out.println(feelState.name());
+    }
 		
 		//set heuristic values of whole note states
 		if(feelState.equals(FeelState.VERY_SLOW)) {
@@ -319,7 +346,9 @@ public class BeatStates {
 		
 		valueState = availableStates.get(nextState).getNote();
 		timeState = availableStates.get(nextState).getTime();
-		System.out.println("Next Note: " + valueState + timeState);
+    if (DEBUG) {
+		  System.out.println("Next Note: " + valueState + timeState);
+    }
 	}
 	
 	/*
@@ -357,13 +386,29 @@ public class BeatStates {
 	public void changeFeels(int feelChoice) {
 		
 		switch(feelChoice) {
-			case 0: feelState = FeelState.VERY_SLOW; System.out.println("VERY SLOW"); break;
-			case 1: feelState = FeelState.SLOW; System.out.println("SLOW"); break;
-			case 2: feelState = FeelState.MODERATE; System.out.println("MODERATE"); break;
-			case 3: feelState = FeelState.FAST; System.out.println("FAST"); break;
-			case 4: feelState = FeelState.QUICK; System.out.println("QUICK"); break;
-			case 5: feelState = FeelState.MIX; System.out.println("MIX"); break;
+			case 0:
+        feelState = FeelState.VERY_SLOW;
+        break;
+			case 1:
+        feelState = FeelState.SLOW; 
+        break;
+			case 2:
+        feelState = FeelState.MODERATE;
+        break;
+			case 3:
+        feelState = FeelState.FAST;
+        break;
+			case 4:
+        feelState = FeelState.QUICK; 
+        break;
+			case 5:
+        feelState = FeelState.MIX;
+        break;
 		}
+
+    if (DEBUG) {
+      System.out.println(feelState.name());
+    }
 	
 		//set heuristic values of whole note states
 		if(feelState.equals(FeelState.VERY_SLOW)) {
