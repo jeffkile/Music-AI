@@ -807,12 +807,12 @@ public class CreateSequence extends Thread
 				offEvents[h] = new ArrayList<Integer>();
 				
 			}
-			tracks[0].add(setSound(33,1)); //bass				
-			tracks[1].add(setSound(73,2)); //lead (flute)
-			tracks[2].add(setSound(118,3)); //drum
-			tracks[3].add(setSound(1,4)); //piano
-			tracks[4].add(setSound(1,5)); //piano
-			tracks[5].add(setSound(1,6)); //piano
+			tracks[0].add(setSound(33,4)); //bass				
+			tracks[1].add(setSound(64,5)); //lead (flute)
+			tracks[2].add(setSound(118,6)); //drum
+			tracks[3].add(setSound(1,1)); //piano
+			tracks[4].add(setSound(1,2)); //piano
+			tracks[5].add(setSound(1,3)); //piano
 			
 		/*	for(int q = size-3; q<size; q++){ //change the last 3 scales to be chords instead
 				myScalesArr[q] = new Chords();

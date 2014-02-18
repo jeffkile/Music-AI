@@ -135,7 +135,7 @@ public class Controller {
 		myPlayer.run(seq1);
 		
 		if(choice < 10 ){
-			for(int i=0; i<10; i++){ //play 10 sequences
+			for(int i=0; i<50; i++){ //play 50 sequences
 				
 				System.out.println("Computing Next Sequence " + i);
 	
